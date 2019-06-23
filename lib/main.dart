@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/question.dart';
 
 void main() => runApp(Quizzler());
 
@@ -35,12 +36,13 @@ class _QuizPageState extends State<QuizPage> {
 //      color: Colors.red,
 //    ),
   ];
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.', // false,
-    'Approximately one quarter of human bones are in the feet.', // true,
-    'A slug\'s blood is green.', //true,
+  List<Question> questions = [
+    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
+    Question(
+        q: 'Approximately one quarter of human bones are in the feet.',
+        a: true),
+    Question(q: 'A slug\'s blood is green.', a: true)
   ];
-  List<bool> answers = [false, true, true];
   int question_number = 0;
 
   @override
@@ -55,7 +57,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[question_number],
+                questions[question_number].question_text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -81,7 +83,7 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked true.
                 setState(() {
-                  if (answers[question_number]) {
+                  if (questions[question_number].question_answer) {
                   } else {}
 //                  scoreKeeper.add(value)
                   question_number++;
@@ -104,7 +106,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                if (answers[question_number]) {
+                if (questions[question_number].question_answer) {
                 } else {}
                 setState(() {
 //                  scoreKeeper.add(value)
