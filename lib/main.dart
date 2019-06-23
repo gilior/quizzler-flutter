@@ -25,6 +25,24 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [
+//    Icon(
+//      Icons.check,
+//      color: Colors.green,
+//    ),
+//    Icon(
+//      Icons.close,
+//      color: Colors.red,
+//    ),
+  ];
+  List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.', // false,
+    'Approximately one quarter of human bones are in the feet.', // true,
+    'A slug\'s blood is green.', //true,
+  ];
+  List<bool> answers = [false, true, true];
+  int question_number = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +55,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[question_number],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -62,6 +80,12 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
+                setState(() {
+                  if (answers[question_number]) {
+                  } else {}
+//                  scoreKeeper.add(value)
+                  question_number++;
+                });
               },
             ),
           ),
@@ -80,11 +104,18 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
+                if (answers[question_number]) {
+                } else {}
+                setState(() {
+//                  scoreKeeper.add(value)
+                  question_number++;
+                });
               },
             ),
           ),
         ),
         //TODO: Add a Row here as your score keeper
+        Row(children: scoreKeeper)
       ],
     );
   }
