@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quizzler/question.dart';
+import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(Quizzler());
 
@@ -26,24 +27,10 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  QuizBrain quizBrain = QuizBrain();
   List<Icon> scoreKeeper = [
-//    Icon(
-//      Icons.check,
-//      color: Colors.green,
-//    ),
-//    Icon(
-//      Icons.close,
-//      color: Colors.red,
-//    ),
+//
   ];
-  List<Question> questions = [
-    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
-    Question(
-        q: 'Approximately one quarter of human bones are in the feet.',
-        a: true),
-    Question(q: 'A slug\'s blood is green.', a: true)
-  ];
-  int question_number = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +44,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[question_number].question_text,
+                quizBrain.getTxt(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -82,12 +69,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                setState(() {
-                  if (questions[question_number].question_answer) {
-                  } else {}
-//                  scoreKeeper.add(value)
-                  question_number++;
-                });
+                handle_answer(true);
               },
             ),
           ),
@@ -106,12 +88,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                if (questions[question_number].question_answer) {
-                } else {}
-                setState(() {
-//                  scoreKeeper.add(value)
-                  question_number++;
-                });
+                handle_answer(false);
               },
             ),
           ),
@@ -120,6 +97,34 @@ class _QuizPageState extends State<QuizPage> {
         Row(children: scoreKeeper)
       ],
     );
+  }
+
+  void handle_answer(bool user_answer) {
+    setState(() {
+      if (quizBrain.isFinished()) {
+        Alert(context: context, title: "ended", desc: "quiz ended.").show();
+        quizBrain.reset();
+        scoreKeeper.clear();
+        return;
+      }
+      if (quizBrain.getAns() && user_answer ||
+          !quizBrain.getAns() && !user_answer) {
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+//
+      } else {
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      }
+      ;
+
+//                  scoreKeeper.add(value)
+      quizBrain.nextQst();
+    });
   }
 }
 
